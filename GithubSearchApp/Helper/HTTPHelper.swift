@@ -30,6 +30,7 @@ public class HTTPHelper
     public static let resultPerPage:Int = 30
     public static var page:Int = 0
     private static var incomplete: Bool = false
+    private static let throttlingSeconds:TimeInterval = 5
 
     private static var executeTime:Date?
 
@@ -37,7 +38,7 @@ public class HTTPHelper
     {
         if !force,
            let compareTime = executeTime,
-           Date() - compareTime < 2
+           Date() - compareTime < throttlingSeconds
         {
             return
         }
