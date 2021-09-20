@@ -37,10 +37,14 @@ class MainViewController: UIViewController, UISearchBarDelegate, UICollectionVie
         let cell: MainCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.CellIdentifier, for: indexPath) as! MainCollectionViewCell
 
         let user = viewModel.searchItems[indexPath.row].owner
-        if let avatar_url = user?.avatar_url,
-           let imageURL = URL(string: avatar_url),
-           let imageData = try? Data(contentsOf: imageURL) {
-            cell.imageView!.image = UIImage(data: imageData)
+        DispatchQueue.global().async {
+            if let avatar_url = user?.avatar_url,
+               let imageURL = URL(string: avatar_url),
+               let imageData = try? Data(contentsOf: imageURL) {
+                DispatchQueue.main.async {
+                    cell.imageView!.image = UIImage(data: imageData)
+                }
+            }
         }
         cell.title.text = viewModel.searchItems[indexPath.row].name
         cell.user.text = viewModel.searchItems[indexPath.row].owner?.login
